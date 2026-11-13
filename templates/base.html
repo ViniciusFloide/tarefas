@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Digite a tarefa e a data de conclusão (opcional):</h1>
+
+    <form method="POST" action="{% if tarefa_a_editar %}{{ url_for('editar_tarefa', id=tarefa_a_editar.id_tarefa) }}{% else %}{{ url_for('index') }}{% endif %}">
+
+        <input
+            type="text"
+            id="tituloTarefa"
+            name="tituloTarefa"
+            placeholder="Nome da tarefa"
+            value="{{ tarefa_a_editar.titulo_tarefa if tarefa_a_editar else '' }}"
+            required
+        >
+
+        <input
+            type="date"
+            id="dataConclusao"
+            name="dataConclusao"
+            value="{{ tarefa_a_editar.data_conclusao if tarefa_a_editar and tarefa_a_editar.data_conclusao else '' }}"
+        >
+
+        <button type="submit">
+            {% if tarefa_a_editar %}Atualizar{% else %}Adicionar{% endif %}
+        </button>
+
+        {% if tarefa_a_editar %}
+            <a href="{{ url_for('index') }}">Cancelar</a>
+        {% endif %}
+
+    </form>
+
+    <ul id="listaTarefas">
+
+        {% for tarefa in tarefas_da_pagina %}
+        <li>
+            {{ tarefa.titulo_tarefa }} - {{ tarefa.data_conclusao }}
+
+            <a href="{{ url_for('editar_tarefa', id=tarefa.id_tarefa) }}">
+                <button type="button" style="background-color: #ffa500; color: white; border: none; padding: 2px 6px; cursor: pointer; margin-right: 4px;">
+                    EDITAR
+                </button>
+            </a>
+
+            <a href="{{ url_for('apagar_tarefa', id=tarefa.id_tarefa) }}">
+                <button type="button" style="background-color: #ff4d4d; color: white; border: none; padding: 2px 6px; cursor: pointer; border-radius: 4px;">
+                    APAGAR
+                </button>
+            </a>
+        </li>
+        {% endfor %}
+
+    </ul>
+
+</body>
+</html>
