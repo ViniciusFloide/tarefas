@@ -63,11 +63,10 @@ def editar_tarefa(id):
 
 @app.route('/apagar/<int:id>')
 def apagar_tarefa(id):
-
     Tarefa.apagar(id)
-
     return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+        

@@ -1,4 +1,7 @@
+
 from os import getenv
+from pathlib import Path
+
 import mysql.connector as mc
 from dotenv import load_dotenv
 from mysql.connector import Error
@@ -10,6 +13,7 @@ class Database:
         self.username = getenv('DB_USER', 'root')
         self.password = getenv('DB_PASSWORD', '')
         self.database = getenv('DB_NAME', 'tarefas')
+        self.port = getenv('DB_PORT', '3306')
         self.connection = None
         self.cursor = None
 
@@ -19,7 +23,8 @@ class Database:
                 host=self.host,
                 database=self.database,
                 user=self.username,
-                password=self.password
+                password=self.password,
+                port=self.port
             )
             if self.connection.is_connected():
                 self.cursor = self.connection.cursor(dictionary=True)
